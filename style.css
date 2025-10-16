@@ -162,6 +162,19 @@ a:focus {
   color: #1b2436;
 }
 
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.button-row .button {
+  flex: 1 1 180px;
+  text-align: center;
+  align-self: stretch;
+}
+
 .button:hover,
 .button:focus {
   background: var(--accent);
@@ -218,6 +231,42 @@ a:focus {
   background: rgba(37, 92, 54, 0.4);
   border: 1px solid rgba(116, 186, 121, 0.6);
   color: #d1f6d7;
+}
+
+.error-message {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(128, 45, 45, 0.4);
+  border: 1px solid rgba(217, 121, 121, 0.6);
+  color: #f8d7d7;
+}
+
+.user-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.user-list li {
+  background: var(--card-bg);
+  padding: 1rem 1.25rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-list li strong {
+  font-size: 1rem;
+}
+
+.user-list li span {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .list-section {

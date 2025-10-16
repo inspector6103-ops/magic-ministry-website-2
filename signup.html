@@ -16,7 +16,7 @@
   </header>
 
   <main class="container narrow">
-    <form class="form-card" id="signup-form">
+    <form class="form-card" id="signup-form" novalidate>
       <label for="signup-id">아이디</label>
       <input id="signup-id" type="text" name="id" placeholder="사용할 아이디" required>
 
@@ -25,7 +25,15 @@
 
       <button type="submit" class="button primary">가입하기</button>
       <p class="success-message" id="signup-success" aria-live="polite" hidden>환영합니다! 회원가입되었습니다!</p>
+      <p class="error-message" id="signup-error" aria-live="polite" hidden>이미 등록된 아이디입니다. 다른 아이디를 사용해주세요.</p>
     </form>
+
+    <section class="list-section" aria-live="polite">
+      <h2>등록된 마법부 아이디</h2>
+      <p class="list-help">회원가입이 완료된 아이디를 한눈에 확인할 수 있습니다.</p>
+      <p class="list-help" id="signup-empty" hidden>아직 등록된 아이디가 없습니다.</p>
+      <ul class="user-list" id="signup-user-list"></ul>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -35,14 +43,79 @@
   </footer>
 
   <script>
+    const SIGNUP_STORAGE_KEY = 'ministryUsers';
     const form = document.getElementById('signup-form');
     const successMessage = document.getElementById('signup-success');
+    const errorMessage = document.getElementById('signup-error');
+    const userList = document.getElementById('signup-user-list');
+    const emptyMessage = document.getElementById('signup-empty');
+
+    const loadUsers = () => {
+      try {
+        return JSON.parse(localStorage.getItem(SIGNUP_STORAGE_KEY)) || [];
+      } catch (error) {
+        console.error('사용자 데이터를 불러오는 중 오류가 발생했습니다.', error);
+        return [];
+      }
+    };
+
+    const saveUsers = users => {
+      localStorage.setItem(SIGNUP_STORAGE_KEY, JSON.stringify(users));
+    };
+
+    const renderUsers = () => {
+      const users = loadUsers();
+      userList.innerHTML = '';
+
+      if (!users.length) {
+        emptyMessage.hidden = false;
+        return;
+      }
+
+      emptyMessage.hidden = true;
+
+      users.forEach(({ id }, index) => {
+        const item = document.createElement('li');
+        const label = document.createElement('strong');
+        label.textContent = id;
+
+        const order = document.createElement('span');
+        order.textContent = `#${String(index + 1).padStart(2, '0')}`;
+
+        item.append(label, order);
+        userList.appendChild(item);
+      });
+    };
 
     form.addEventListener('submit', event => {
       event.preventDefault();
+
+      const id = form['id'].value.trim();
+      const password = form['password'].value.trim();
+
+      if (!id || !password) {
+        return;
+      }
+
+      const users = loadUsers();
+      const isDuplicate = users.some(user => user.id === id);
+
+      if (isDuplicate) {
+        successMessage.hidden = true;
+        errorMessage.hidden = false;
+        return;
+      }
+
+      users.push({ id, password });
+      saveUsers(users);
+      renderUsers();
+
+      errorMessage.hidden = true;
       successMessage.hidden = false;
       form.reset();
     });
+
+    renderUsers();
   </script>
 </body>
 </html>
