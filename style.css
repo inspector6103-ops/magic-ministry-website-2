@@ -320,6 +320,57 @@ a:focus {
   font-size: 0.85rem;
 }
 
+.admin-wrapper {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 960px) {
+  .admin-wrapper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.admin-panel {
+  margin: 0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+}
+
+.admin-table thead {
+  background: rgba(197, 167, 105, 0.15);
+  color: var(--accent);
+}
+
+.admin-table tbody tr + tr {
+  border-top: 1px solid rgba(154, 167, 194, 0.2);
+}
+
+.secret-hint {
+  margin-top: 1.25rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.admin-petitions .petition-item {
+  background: rgba(12, 22, 38, 0.85);
+}
+
 .job-list {
   margin-bottom: 3rem;
 }
